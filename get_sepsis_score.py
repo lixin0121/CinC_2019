@@ -4,11 +4,11 @@ import sys
 import numpy as np
 from tensorflow.keras.models import load_model
 
-def get_sepsis_score(values, column_names):
+def get_sepsis_score(data):
     Empty_M=np.zeros((66,1));
     feature_select=np.vstack((0,1,2,3,4,5,6,7,21,35,39));
-    l=len(values)
-    M0=values;
+    l=len(data)
+    M0=data;
     X=np.zeros((l,121));    
     for j in range(0,len(M0)):
          if j<5:
@@ -38,38 +38,28 @@ def read_challenge_data(input_file):
     with open(input_file, 'r') as f:
         header = f.readline().strip()
         column_names = header.split('|')
-        values = np.loadtxt(f, delimiter='|')
+        data = np.loadtxt(f, delimiter='|')
+
     # ignore SepsisLabel column if present
     if column_names[-1] == 'SepsisLabel':
         column_names = column_names[:-1]
-        values = values[:, :-1]
-    return (values, column_names)
+        data = data[:, :-1]
 
+    return data
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        sys.exit('Usage: %s input[.psv]' % sys.argv[0])
+    # read data
+    data = read_challenge_data(sys.argv[1])
 
-    record_name = sys.argv[1]
-    if record_name.endswith('.psv'):
-        record_name = record_name[:-4]
+    # make predictions
+    if data.size != 0:
+        (scores, labels) = get_sepsis_score(data)
 
-    # read input data
-    input_file = record_name + '.psv'
-    (values, column_names) = read_challenge_data(input_file)
+    # write results
+    with open(sys.argv[2], 'w') as f:
+        f.write('PredictedProbability|PredictedLabel\n')
+        if data.size != 0:
+            for (s, l) in zip(scores, labels):
+                f.write('%g|%d\n' % (s, l))
 
-    # generate predictions
-    (scores, labels) = get_sepsis_score(values, column_names)
 
-    # write predictions to output file
-    output_file = record_name + '.out'
-    with open(output_file, 'w') as f:
-        count=0;
-        for (s, l) in zip(scores, labels):
-#            f.write('%g|%d\n' % (s, l))
-            count=count+1;
-            if count==len(scores):
-             f.write('%g|%d' % (s, l))
-            else:
-             f.write('%g|%d\n' % (s, l))
-                
