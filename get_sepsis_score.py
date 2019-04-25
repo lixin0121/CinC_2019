@@ -27,7 +27,7 @@ def get_sepsis_score(data):
          X[j,:]=np.transpose(temp);
     X=np.nan_to_num(X)
     X = X.reshape(len(X),11,11,1);
-    model = load_model('my_model_v6.h5')
+    model = load_model('my_model_v8.h5')
     labels= model.predict_classes(X)
     scores= model.predict_proba(X)
     scores=scores[:,1];
