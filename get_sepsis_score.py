@@ -38,5 +38,5 @@ def get_sepsis_score(data,model):
     return (scores, labels)
 
 def load_sepsis_model():
-    model = load_model('my_model_v8.h5')
+    model = load_model('my_model_v11.h5')
     return model
