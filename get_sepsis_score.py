@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model
 
 def get_sepsis_score(data,model):
     Empty_M=np.zeros((66,1));
-    feature_select=np.vstack((0,1,2,3,4,5,6,7,21,35,39));
+    feature_select=np.vstack((0,1,2,3,4,5,6,7,21,25,35));
     l=len(data)
     M0=data;
     X=np.zeros((l,121));    
