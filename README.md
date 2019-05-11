@@ -24,8 +24,11 @@ $ docker build -t my-python-app .
 Run in a container 
 
 $ docker run my-python-app python get_sepsis_score.py 'p1.psv' 'p1out.psv'
+
 $ docker run my-python-app python driver.py test out
 
 Copy the container output to local system
 
 $ cp {container name}:/physionet2019/p1out.psv p1out.psv
+
+
