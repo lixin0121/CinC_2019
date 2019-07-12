@@ -25,8 +25,9 @@ def get_sepsis_score(data,model):
             temp=np.zeros((12,40));
             temp=M0[np.maximum(j-12,0):j,0:40];
     X = temp;
-
-    X=np.nan_to_num(X)
+#    X=np.nan_to_num(X)
+    where_are_nan = np.isnan(X)
+    X[where_are_nan]=-1;
 #    X = X.reshape(len(X),11,11,1);
     X = X.reshape(1,12,40);
 #    model = load_model('my_model_v8.h5')
@@ -36,5 +37,5 @@ def get_sepsis_score(data,model):
     return (scores, labels)
 
 def load_sepsis_model():
-    model = load_model('my_model_RNN_v4.h5')
+    model = load_model('my_model_RNN_v7.h5')
     return model
