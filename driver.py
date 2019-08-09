@@ -40,8 +40,8 @@ if __name__ == '__main__':
         os.mkdir(output_directory)
 
     # Load model.
-#    model = load_sepsis_model()
-    model1, model2 = load_sepsis_model()
+    model = load_sepsis_model()
+
     # Iterate over files.
     for f in files:
         # Load data.
@@ -54,7 +54,7 @@ if __name__ == '__main__':
         labels = np.zeros(num_rows)
         for t in range(num_rows):
             current_data = data[:t+1]
-            current_score, current_label = get_sepsis_score(current_data, model1,model2)
+            current_score, current_label = get_sepsis_score(current_data, model)
             scores[t] = current_score
             labels[t] = current_label
 
